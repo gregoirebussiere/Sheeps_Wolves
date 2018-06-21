@@ -32,13 +32,14 @@ class RandomWalker(Agent):
         self.pos = pos
         self.moore = moore
 
-    def random_move(self):
+    def random_move(self,compGreg):
         '''
         Step one cell in any allowable direction.
         '''
         # Pick the next cell from the adjacent cells.
-        comp_greg = 0.5
-        if random.random()>comp_greg:
+
+
+        if random.random()>compGreg:
             next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
             next_move = random.choice(next_moves)
 

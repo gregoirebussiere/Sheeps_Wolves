@@ -39,6 +39,9 @@ class WolfSheepPredation(Model):
     grass_regrowth_time = 30
     sheep_gain_from_food = 4
 
+    compGregSheep = 0.5
+    compGregWolf = 0
+
     verbose = False  # Print-monitoring
 
     description = 'A model for simulating wolf and sheep (predator-prey) ecosystem modelling.'
@@ -47,7 +50,7 @@ class WolfSheepPredation(Model):
                  initial_sheep=100, initial_wolves=50,
                  sheep_reproduce=0.04, wolf_reproduce=0.05,
                  wolf_gain_from_food=20,
-                 grass=False, grass_regrowth_time=30, sheep_gain_from_food=4):
+                 grass=False, grass_regrowth_time=30, sheep_gain_from_food=4, compGregSheep=1, compGregWolf=0):
         '''
         Create a new Wolf-Sheep model with the given parameters.
 
@@ -74,6 +77,8 @@ class WolfSheepPredation(Model):
         self.grass = grass
         self.grass_regrowth_time = grass_regrowth_time
         self.sheep_gain_from_food = sheep_gain_from_food
+        self.compGregSheep = compGregSheep
+        self.compGregWolf = compGregWolf
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
