@@ -49,7 +49,7 @@ class RandomWalker(Agent):
             for i in (next_moves):
                 for k in self.model.grid[i[0]][i[1]]:
                     if isinstance(k,type(self)):
-                        pass
+                        return
                 next_move = random.choice(next_moves)
                 self.model.grid.move_agent(self, next_move)
         # Now move:
