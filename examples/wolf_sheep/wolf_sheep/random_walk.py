@@ -42,14 +42,14 @@ class RandomWalker(Agent):
         if random.random()>compGreg:
             next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
             next_move = random.choice(next_moves)
+            self.model.grid.move_agent(self, next_move)
 
         else:
             next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)     
             for i in (next_moves):
                 for k in self.model.grid[i[0]][i[1]]:
                     if isinstance(k,type(self)):
-                        self.model.grid.move_agent(self, next_moves[4])
-                        return
+                        pass
                 next_move = random.choice(next_moves)
                 self.model.grid.move_agent(self, next_move)
         # Now move:

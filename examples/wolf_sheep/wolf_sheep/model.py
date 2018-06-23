@@ -39,8 +39,8 @@ class WolfSheepPredation(Model):
     grass_regrowth_time = 30
     sheep_gain_from_food = 4
 
-    compGregSheep = 0.5
-    compGregWolf = 0
+    compGregSheep = 1
+    compGregWolf = 1
 
     verbose = False  # Print-monitoring
 
