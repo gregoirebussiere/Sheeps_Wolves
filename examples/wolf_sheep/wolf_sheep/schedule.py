@@ -49,6 +49,7 @@ class RandomActivationByBreed(RandomActivation):
             by_breed: If True, run all agents of a single breed before running
                       the next one.
         '''
+        
         if by_breed:
             for agent_class in self.agents_by_breed:
                 self.step_breed(agent_class)

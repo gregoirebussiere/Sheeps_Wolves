@@ -42,7 +42,9 @@ class WolfSheepPredation(Model):
     compGregSheep = 1
     compGregWolf = 1
 
-    verbose = False  # Print-monitoring
+    
+
+    verbose = True  # Print-monitoring
 
     description = 'A model for simulating wolf and sheep (predator-prey) ecosystem modelling.'
 
@@ -65,12 +67,14 @@ class WolfSheepPredation(Model):
                                  once it is eaten
             sheep_gain_from_food: Energy sheep gain from grass, if enabled.
         '''
+        
         super().__init__()
         # Set parameters
         self.height = height
         self.width = width
         self.initial_sheep = initial_sheep
         self.initial_wolves = initial_wolves
+    
         self.sheep_reproduce = sheep_reproduce
         self.wolf_reproduce = wolf_reproduce
         self.wolf_gain_from_food = wolf_gain_from_food
@@ -79,18 +83,22 @@ class WolfSheepPredation(Model):
         self.sheep_gain_from_food = sheep_gain_from_food
         self.compGregSheep = compGregSheep
         self.compGregWolf = compGregWolf
+       
+        self.energy_totale=0
 
         self.schedule = RandomActivationByBreed(self)
         self.grid = MultiGrid(self.height, self.width, torus=True)
         self.datacollector = DataCollector(
             {"Wolves": lambda m: m.schedule.get_breed_count(Wolf),
              "Sheep": lambda m: m.schedule.get_breed_count(Sheep)})
+            
 
         # Create sheep:
         for i in range(self.initial_sheep):
             x = random.randrange(self.width)
             y = random.randrange(self.height)
             energy = random.randrange(2 * self.sheep_gain_from_food)
+            self.energy_totale += energy
             sheep = Sheep(self.next_id(), (x, y), self, True, energy)
             self.grid.place_agent(sheep, (x, y))
             self.schedule.add(sheep)
@@ -100,10 +108,12 @@ class WolfSheepPredation(Model):
             x = random.randrange(self.width)
             y = random.randrange(self.height)
             energy = random.randrange(2 * self.wolf_gain_from_food)
+            self.energy_totale += energy
             wolf = Wolf(self.next_id(), (x, y), self, True, energy)
             self.grid.place_agent(wolf, (x, y))
             self.schedule.add(wolf)
-
+        
+       
         # Create grass patches
         if self.grass:
             for agent, x, y in self.grid.coord_iter():
@@ -124,24 +134,34 @@ class WolfSheepPredation(Model):
         self.datacollector.collect(self)
 
     def step(self):
+        self.energy_totale=0
         self.schedule.step()
         # collect data
-        self.datacollector.collect(self)
+        
+        
         if self.verbose:
-            print([self.schedule.time,
+            result=[self.schedule.time,
                    self.schedule.get_breed_count(Wolf),
-                   self.schedule.get_breed_count(Sheep)])
+                   self.schedule.get_breed_count(Sheep),
+                   self.energy_totale]
+            fitness=result[3]/(result[1]+result[2])
+            print('fitness:',fitness)
+        return(fitness)
 
-    def run_model(self, step_count=200):
+    def run_model(self, step_count=2):
+
 
         if self.verbose:
             print('Initial number wolves: ',
                   self.schedule.get_breed_count(Wolf))
             print('Initial number sheep: ',
                   self.schedule.get_breed_count(Sheep))
+         
 
-        for i in range(step_count):
+        for i in range(2):
+            
             self.step()
+            
 
         if self.verbose:
             print('')
@@ -149,3 +169,6 @@ class WolfSheepPredation(Model):
                   self.schedule.get_breed_count(Wolf))
             print('Final number sheep: ',
                   self.schedule.get_breed_count(Sheep))
+            print('Énergie totale:',self.energy_totale)
+            
+        
