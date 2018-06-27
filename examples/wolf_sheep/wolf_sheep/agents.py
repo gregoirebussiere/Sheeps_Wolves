@@ -2,7 +2,7 @@ import random
 
 from mesa import Agent
 
-from wolf_sheep.random_walk import RandomWalker
+from random_walk import RandomWalker
 
 
 class Sheep(RandomWalker):
@@ -54,6 +54,7 @@ class Sheep(RandomWalker):
             self.model.grid.place_agent(lamb, self.pos)
             self.model.schedule.add(lamb)
         self.model.energy_totale += self.energy
+        
 
 class Wolf(RandomWalker):
     '''

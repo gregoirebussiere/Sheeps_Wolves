@@ -148,7 +148,7 @@ class WolfSheepPredation(Model):
             print('fitness:',fitness)
         return(fitness)
 
-    def run_model(self, step_count=2):
+    def run_model(self, step_count=200):
 
 
         if self.verbose:
@@ -158,7 +158,7 @@ class WolfSheepPredation(Model):
                   self.schedule.get_breed_count(Sheep))
          
 
-        for i in range(2):
+        for i in range(step_count):
             
             self.step()
             
@@ -169,6 +169,6 @@ class WolfSheepPredation(Model):
                   self.schedule.get_breed_count(Wolf))
             print('Final number sheep: ',
                   self.schedule.get_breed_count(Sheep))
-            print('Énergie totale:',self.energy_totale)
+            print('energie totale:',self.energy_totale)
             
         

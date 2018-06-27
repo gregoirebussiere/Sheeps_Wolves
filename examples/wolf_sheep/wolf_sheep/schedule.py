@@ -18,6 +18,7 @@ class RandomActivationByBreed(RandomActivation):
     def __init__(self, model):
         super().__init__(model)
         self.agents_by_breed = defaultdict(dict)
+        
 
     def add(self, agent):
         '''
@@ -41,7 +42,7 @@ class RandomActivationByBreed(RandomActivation):
         agent_class = type(agent)
         del self.agents_by_breed[agent_class][agent.unique_id]
 
-    def step(self, by_breed=True):
+    def step(self, by_breed=True,nb_etapes=10):
         '''
         Executes the step of each agent breed, one at a time, in random order.
 
@@ -50,11 +51,15 @@ class RandomActivationByBreed(RandomActivation):
                       the next one.
         '''
         
-        if by_breed:
+        if by_breed and self.steps<nb_etapes:
             for agent_class in self.agents_by_breed:
                 self.step_breed(agent_class)
             self.steps += 1
             self.time += 1
+            if self.steps >=3:
+                print('FIN')
+                
+
         else:
             super().step()
 
